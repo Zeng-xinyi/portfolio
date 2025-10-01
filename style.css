@@ -18,10 +18,3 @@ nav a {
 nav a:hover {
     text-decoration: underline;
 }
-img[alt="A photo of me hiking"] {
-    width: 800px;
-    height: auto;
-    display: block;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-}
