@@ -4,14 +4,7 @@ body {
 	 */
   font: 100%/1.5 system-ui;
 }
-img[alt="A photo of me hiking"] {
-    width: 500px;
-    height: auto;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-}
+
 nav {
     margin-bottom: 20px;
     padding: 10px;
@@ -24,4 +17,13 @@ nav a {
 }
 nav a:hover {
     text-decoration: underline;
+}
+
+img[alt="A photo of me hiking"] {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
 }
