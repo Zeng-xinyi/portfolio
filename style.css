@@ -4,3 +4,16 @@ body {
 	 */
   font: 100%/1.5 system-ui;
 }
+nav {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+nav a {
+    text-decoration: none;
+    margin-right: 15px;
+    color: #0066cc;
+}
+nav a:hover {
+    text-decoration: underline;
+}
