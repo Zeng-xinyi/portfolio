@@ -6,6 +6,8 @@ body {
   max-width: 100ch;
   /* Center the content */
   margin-inline: auto;
-  
+  /* Add horizontal padding so that the content doesn't touch viewport edges */
+  padding-inline: 1rem;
+
 }
 
