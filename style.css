@@ -10,4 +10,9 @@ body {
   padding-inline: 1rem;
 
 }
+/*Descendant selectors*/
+nav ul,
+nav li {
+  display: contents;
+}
 
