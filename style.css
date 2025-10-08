@@ -65,21 +65,18 @@ button {
   font: inherit;
 }
 
-/*each label is a line*/
-label,
-input,
-textarea,
-button {
-  display: block;
-}
-
-input,
-textarea,
-button {
-  width: 100%;
-  box-sizing: border-box; /*avoid overflowing*/
+form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1em;
 }
 
 label {
-  margin-block: 1em 0.5em;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+button[type="submit"] {
+  grid-column: 1 / -1;
 }
