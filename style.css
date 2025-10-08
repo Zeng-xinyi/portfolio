@@ -15,10 +15,31 @@ nav ul,
 nav li {
   display: contents;
 }
+
 nav {
   display: flex;
 }
 
 nav a {
   flex: 1;
+}
+
+nav {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid oklch(80% 3% 200);
+}
+
+nav a {
+  /*Remove the underline*/
+  text-decoration: none;
+  /*Remove the gory default link color*/
+  color: inherit;
+  /*Center the text in its box*/
+  text-align: center;
+  padding: 0.5em;
+}
+
+nav a.current {
+  border-bottom: 0.4em solid oklch(80% 3% 200);
+  padding-bottom: 0.1em;
 }
