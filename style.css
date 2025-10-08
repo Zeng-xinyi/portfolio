@@ -85,5 +85,15 @@ button[type="submit"] {
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-  gap: 1em; /* 设置间距 */
+  gap: 1em; /* Set Spacing */
+}
+
+.projects article {
+  display: grid;
+  grid-template-rows: subgrid; 
+  grid-row: span 3; 
+}
+
+.projects h2 {
+  margin: 0; 
 }
