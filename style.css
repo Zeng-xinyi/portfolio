@@ -39,24 +39,46 @@ nav a {
   padding: 0.5em;
 }
 
+/*Add border of the navigation bar*/
 nav a.current {
   border-bottom: 0.4em solid oklch(80% 3% 200);
   padding-bottom: 0.1em;
 }
 
+/*Add border of the navigation bar*/
 :root {
   --color-accent: oklch(65% 50% 0);
   accent-color: var(--color-accent);
 }
 
+/*Add hover display*/
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
   background-color: oklch(from var(--color-accent) 95% 5% h);
 }
 
+/*Contact page*/
 /*make the font uniform*/
 input,
 textarea,
 button {
   font: inherit;
+}
+
+label,
+input,
+textarea,
+button {
+  display: block;
+}
+
+input,
+textarea,
+button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+label {
+  margin-block: 1em 0.5em;
 }
