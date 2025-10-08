@@ -9,6 +9,16 @@ body {
   /* Add horizontal padding so that the content doesn't touch viewport edges */
   padding-inline: 1rem;
 
+  /* Default styles for all headings */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1; /* Compact leading for headings */
+    text-wrap: balance; /* Balance wrapping for multi-line titles */
+  }
+
+  h1 {
+    font-size: 300%; /* Make <h1> significantly larger */
+  }
+
 }
 /*Descendant selectors*/
 nav ul,
