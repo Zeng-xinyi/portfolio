@@ -1,3 +1,11 @@
+/*Add border of the navigation bar*/
+:root {
+  --color-accent: oklch(65% 50% 0);
+  accent-color: var(--color-accent);
+  --color-border: oklch(84.717% 0.04267 351.188);   
+  --color-card-bg: oklch(from var(--color-accent) 99% 0.01 h);     
+}
+
 body {
   /* Set line height to 1.5 times the font size
 	   and use the OS’s UI font as the website font
@@ -55,12 +63,6 @@ nav a.current {
   padding-bottom: 0.1em;
 }
 
-/*Add border of the navigation bar*/
-:root {
-  --color-accent: oklch(65% 50% 0);
-  accent-color: var(--color-accent);
-}
-
 /*Add hover display*/
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
@@ -106,4 +108,52 @@ button[type="submit"] {
 
 .projects h2 {
   margin: 0; 
+}
+
+section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid oklch(80% 3% 200); /* add separate lines */
+}
+section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+/*emphasize the h2*/
+h2 {
+  font-size: 150%;
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  color: var(--color-accent);
+  position: relative;
+}
+h2::before {
+  content: "";
+  display: block;
+  width: 1.5em; /*short or long*/
+  height: 0.1em; /*thin or thick*/
+  background: var(--color-accent);
+  position: absolute;
+  bottom: -0.4em;
+  left: 0;
+}
+
+/*Add background color to the article section*/
+article {
+  background: var(--color-card-bg);
+  border-radius: 12px;
+  padding: 1.2em;
+  margin-bottom: 1.4em;
+  box-shadow: 0 2px 6px oklch(0 0 0 / 5%);
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px oklch(0 0 0 / 8%);
+}
+
+a {
+  color: var(--color-accent);
 }
