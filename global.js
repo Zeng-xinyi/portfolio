@@ -41,7 +41,10 @@ for (let p of pages) {
   );
 
   // Open external links in new tab
-  a.toggleAttribute('target', a.host !== location.host);
+  if (a.host !== location.host) {
+    a.target = '_blank';
+    a.rel = 'noopener'; // prevent the new page from accessing window.opener
+  }
 
   nav.append(a);
 }
