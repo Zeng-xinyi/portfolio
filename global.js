@@ -80,3 +80,18 @@ select.addEventListener('change', (event) => {
   document.documentElement.style.colorScheme = theme;
   localStorage.setItem('theme', theme); 
 });
+
+const form = document.querySelector('form');
+form?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const data = new FormData(form);
+  let url = form.action + '?';
+  const params = [];
+  for (let [name, value] of data) {
+    if (value.trim() !== '') {
+      params.push(`${name}=${encodeURIComponent(value)}`);
+    }
+  }
+  url += params.join('&');
+  location.href = url;
+});

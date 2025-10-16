@@ -7,7 +7,7 @@ html {
   --color-accent: oklch(65% 50% 0);
   accent-color: var(--color-accent);
   --color-border: oklch(84.717% 0.04267 351.188);   
-  --color-card-bg: oklch(from var(--color-accent) 99% 0.01 h);     
+  --color-card-bg: color-mix(in oklch, var(--color-accent) 5%, canvas 95%);     
   --border-color: oklch(50% 10% 200 / 40%);
 }
 
@@ -72,7 +72,8 @@ nav a:hover {
 /*make the font uniform*/
 input,
 textarea,
-button {
+button,
+select {
   font: inherit;
 }
 
@@ -159,9 +160,12 @@ a {
 
 /* Theme switch styling */
 .color-scheme {
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 0.9em;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+  font-family: inherit;
+  z-index: 10; /* the content lies on top */
 }
 
 .color-scheme select {
