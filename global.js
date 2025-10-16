@@ -29,5 +29,19 @@ for (let p of pages) {
     url = BASE_PATH + url;
   }
 
-  nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
+  //directly create DOM object, avoid transforming mistakes.
+  let a = document.createElement('a');
+  a.href = url;
+  a.textContent = title;
+
+  // highlight current page
+  a.classList.toggle(
+    'current',
+    a.host === location.host && a.pathname === location.pathname
+  );
+
+  // Open external links in new tab
+  a.toggleAttribute('target', a.host !== location.host);
+
+  nav.append(a);
 }
