@@ -1,5 +1,5 @@
 html {
-  color-scheme: dark;
+  color-scheme: light dark; 
 }
 
 /*Add border of the navigation bar*/
@@ -155,4 +155,20 @@ article:hover {
 
 a {
   color: var(--color-accent);
+}
+
+/* Theme switch styling */
+.color-scheme {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9em;
+}
+
+.color-scheme select {
+  margin-left: 0.5em;
+  padding: 0.2em 0.5em;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: canvas;
+  color: canvastext;
 }

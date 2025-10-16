@@ -48,3 +48,35 @@ for (let p of pages) {
 
   nav.append(a);
 }
+
+// Add dark mode switch
+document.body.insertAdjacentHTML(
+  'afterbegin',
+  `
+	<label class="color-scheme">
+		Theme:
+		<select>
+			<option value="light dark">Automatic</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+		</select>
+	</label>`,
+);
+
+//make the switch work
+// reserve the mode when changing the page
+const select = document.querySelector('.color-scheme select');
+
+// load localStorage's theme（if existed）
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  document.documentElement.style.colorScheme = savedTheme;
+  select.value = savedTheme;
+}
+
+// when shifting the page，save the mode in localStorage
+select.addEventListener('change', (event) => {
+  const theme = event.target.value;
+  document.documentElement.style.colorScheme = theme;
+  localStorage.setItem('theme', theme); 
+});
