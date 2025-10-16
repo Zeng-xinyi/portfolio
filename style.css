@@ -139,7 +139,7 @@ h2::before {
   left: 0;
 }
 
-/*Add background color to the article section*/
+/*Add background color to the article*/
 article {
   background: var(--color-card-bg);
   border-radius: 12px;
