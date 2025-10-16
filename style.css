@@ -1,9 +1,14 @@
+html {
+  color-scheme: dark;
+}
+
 /*Add border of the navigation bar*/
 :root {
   --color-accent: oklch(65% 50% 0);
   accent-color: var(--color-accent);
   --color-border: oklch(84.717% 0.04267 351.188);   
   --color-card-bg: oklch(from var(--color-accent) 99% 0.01 h);     
+  --border-color: oklch(50% 10% 200 / 40%);
 }
 
 body {
@@ -36,18 +41,12 @@ nav li {
 
 nav {
   display: flex;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
 nav a {
   flex: 1;
-}
-
-nav {
-  margin-bottom: 1rem;
-  border-bottom: 1px solid oklch(80% 3% 200);
-}
-
-nav a {
   /*Remove the underline*/
   text-decoration: none;
   /*Remove the gory default link color*/
@@ -59,14 +58,14 @@ nav a {
 
 /*Add border of the navigation bar*/
 nav a.current {
-  border-bottom: 0.4em solid oklch(80% 3% 200);
+  border-bottom: 0.4em solid var(--border-color);
   padding-bottom: 0.1em;
 }
 
 /*Add hover display*/
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
 /*Contact page*/
@@ -113,7 +112,7 @@ button[type="submit"] {
 section {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid oklch(80% 3% 200); /* add separate lines */
+  border-bottom: 1px solid var(--border-color); /* add separate lines */
 }
 section:last-of-type {
   border-bottom: none;
