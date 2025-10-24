@@ -95,3 +95,86 @@ form?.addEventListener('submit', (event) => {
   url += params.join('&');
   location.href = url;
 });
+
+export async function fetchJSON(url) {
+  try {
+    // Fetch the JSON file from the given URL
+    const response = await fetch(url);
+    
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+    throw error; // show what error it is
+  }
+}
+
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  //projects: array, whose object is { title, image, description, ... }, referring to an article
+  //containerElement: DOM container
+
+  //check object: position error
+  if (!containerElement || !(containerElement instanceof Element)) {
+    console.error('renderProjects: containerElement is not a DOM element');
+    return;
+  }
+  if (!Array.isArray(projects)) {
+    console.error('renderProjects: projects must be an array');
+    return;
+  }
+  // headingLevel: 'h1' 'h2' 'h3' … 'h6'
+  if (!/^h[1-6]$/.test(headingLevel)) {
+    console.warn(`renderProjects: invalid headingLevel "${headingLevel}", using "h2".`);
+    headingLevel = 'h2';
+  }
+
+  //let container like <div class="projects"> empty
+  containerElement.innerHTML = '';
+  // note when there is no project
+  if (projects.length === 0) {
+    const p = document.createElement('p');
+    p.textContent = 'No projects available.';
+    containerElement.appendChild(p);
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  // iterate projects
+  for (const project of projects) {
+    const article = document.createElement('article');
+    //set title
+    const titleText = project.title || 'Untitled Project';
+    const imgSrc = project.image || '../images/placeholder.png';
+    const descText = project.description || '';
+
+    const heading = document.createElement(headingLevel);
+    heading.textContent = titleText;
+    //parentNode.appendChild(childNode);
+    //Add a node as the last child of another node
+    article.appendChild(heading);
+
+    // image
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = titleText;
+    img.loading = 'lazy';
+    img.addEventListener('error', () => {
+      img.src = '../images/placeholder.png';
+    });
+    article.appendChild(img);
+
+    // <p> for text
+    const p = document.createElement('p');
+    p.textContent = descText;
+    article.appendChild(p);
+
+    fragment.appendChild(article);
+  }
+
+  containerElement.appendChild(fragment);
+}
