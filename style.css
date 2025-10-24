@@ -176,3 +176,54 @@ a {
   background: canvas;
   color: canvastext;
 }
+
+/* GitHub Stats Section */
+#profile-stats {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  margin: 2rem 0;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+#profile-stats dl {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  margin: 0;
+}
+
+#profile-stats dt {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: #6b7280; /* 灰色标题 */
+  margin-bottom: 0.3rem;
+}
+
+#profile-stats dd {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827; /* 深色数字 */
+  margin: 0;
+}
+
+#profile-stats img {
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+#profile-stats h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#profile-stats a {
+  text-decoration: none;
+}
+
+#profile-stats a:hover {
+  text-decoration: underline;
+}

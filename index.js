@@ -10,14 +10,16 @@ renderProjects(latestProjects, projectsContainer, 'h3');
 // gain github info
 const githubData = await fetchGithubData('Zeng-xinyi');
 // github home page
-const githubContainer = document.querySelector('.github-info');
+const profileStats = document.querySelector('#profile-stats');
 // show info
 if (githubData) {
-  githubContainer.innerHTML = `
+  profileStats.innerHTML = `
     <img src="${githubData.avatar_url}" alt="GitHub avatar" width="100">
-    <p><a href="${githubData.html_url}" target="_blank">@${githubData.login}</a></p>
-    <p>Followers: ${githubData.followers}</p>
-    <p>Following: ${githubData.following}</p>
-    <p>Public Repos: ${githubData.public_repos}</p>
+    <h3><a href="${githubData.html_url}" target="_blank">@${githubData.login}</a></h3>
+    <dl>
+      <dt>Public Repos:</dt><dd>${githubData.public_repos}</dd>
+      <dt>Followers:</dt><dd>${githubData.followers}</dd>
+      <dt>Following:</dt><dd>${githubData.following}</dd>
+    </dl>
   `;
 }
