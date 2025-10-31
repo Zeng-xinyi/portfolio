@@ -293,3 +293,15 @@ a {
   flex: 1;                    
 }
 
+.searchBar {
+  display: block;            
+  width: 100%;               
+  max-width: 25em;           
+  margin-block: 1.5em;       
+  padding: 0.5em 0.75em;     
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  background: canvas;
+  color: canvastext;
+}

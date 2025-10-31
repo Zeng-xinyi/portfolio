@@ -36,48 +36,109 @@ if (titleElement) {
 //   .attr('fill', 'red');
 
 // Draw a static pie chart with D3
-const svg = d3.select('#projects-pie-plot');
-const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
-const sliceGenerator = d3.pie().value(d => d.value);
+// const svg = d3.select('#projects-pie-plot');
+// const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+// const sliceGenerator = d3.pie().value(d => d.value);
+// 
+// // Group projects by year and count
+// let rolledData = d3.rollups(
+//   projects,        
+//   (v) => v.length, 
+//   (d) => d.year    
+// );
+// 
+// // Convert to array of objects with {value, label}
+// let data = rolledData.map(([year, count]) => {
+//   return { value: count, label: year };
+// });
+// 
+// const arcData = sliceGenerator(data);
+// const colors = d3.scaleOrdinal(d3.schemeTableau10);
+// 
+// arcData.forEach((d, idx) => {
+//   svg.append('path')
+//     .attr('d', arcGenerator(d))
+//     .attr('fill', colors(idx))
+//     .attr('stroke', 'white')
+//     .attr('stroke-width', 0.5);
+// });
+// 
+// 
+// // avoid repeating rendering
+// d3.select('.legend').html('');
+// 
+// const legend = d3.select('.legend');
+// 
+// data.forEach((d, idx) => {
+//   legend.append('li')
+//     .attr('class', 'legend-item')
+//     .attr('style', `--color: ${colors(idx)}`)
+//     .html(`<span class="swatch" aria-hidden="true"></span> ${d.label} <em>(${d.value})</em>`);
+// });
 
-// Group projects by year and count
-let rolledData = d3.rollups(
-  projects,        
-  (v) => v.length, 
-  (d) => d.year    
-);
+function renderPieChart(projectsGiven) {
+  const svg = d3.select('#projects-pie-plot');
+  const legend = d3.select('.legend');
 
-// Convert to array of objects with {value, label}
-let data = rolledData.map(([year, count]) => {
-  return { value: count, label: year };
+  svg.selectAll('path').remove();
+  legend.selectAll('li').remove();
+
+  // if no data, not draw
+  if (!projectsGiven || projectsGiven.length === 0) return;
+
+  const rolledData = d3.rollups(
+    projectsGiven,
+    (v) => v.length, 
+    (d) => d.year 
+  );
+
+  const data = rolledData.map(([year, count]) => ({
+    label: year,
+    value: count,
+  }));
+
+  const colors = d3.scaleOrdinal(d3.schemeTableau10);
+  const sliceGenerator = d3.pie().value((d) => d.value);
+  const arcData = sliceGenerator(data);
+  const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+
+  svg
+    .selectAll('path')
+    .data(arcData)
+    .enter()
+    .append('path')
+    .attr('d', arcGenerator)
+    .attr('fill', (_, i) => colors(i));
+
+  data.forEach((d, idx) => {
+    legend
+      .append('li')
+      .attr('class', 'legend-item')
+      .attr('style', `--color:${colors(idx)}`)
+      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
+  });
+}
+
+// add search functionality 
+let query = '';
+const searchInput = document.querySelector('.searchBar');
+renderPieChart(projects);
+
+// input: Triggered every time the user enters or deletes a character (in real time).
+searchInput.addEventListener('input', (event) => {
+  query = event.target.value.trim().toLowerCase();
+
+  let filteredProjects = projects.filter((project) =>
+    project.title.toLowerCase().includes(query)
+  );
+
+  renderProjects(filteredProjects, projectsContainer, 'h2');
+
+  if (titleElement) {
+    titleElement.textContent = `${filteredProjects.length} Projects`;
+  }
+
+  renderPieChart(filteredProjects);
 });
 
-const arcData = sliceGenerator(data);
-const colors = d3.scaleOrdinal(d3.schemeTableau10);
-
-arcData.forEach((d, idx) => {
-  svg.append('path')
-    .attr('d', arcGenerator(d))
-    .attr('fill', colors(idx))
-    .attr('stroke', 'white')
-    .attr('stroke-width', 0.5);
-});
-
-
-
-
-
-
-
-
-// avoid repeating rendering
-d3.select('.legend').html('');
-
-const legend = d3.select('.legend');
-
-data.forEach((d, idx) => {
-  legend.append('li')
-    .attr('class', 'legend-item')
-    .attr('style', `--color: ${colors(idx)}`)
-    .html(`<span class="swatch" aria-hidden="true"></span> ${d.label} <em>(${d.value})</em>`);
-});
+console.log('Interactive pie chart with search ready!');
