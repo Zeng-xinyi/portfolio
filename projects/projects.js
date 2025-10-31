@@ -118,6 +118,20 @@ function renderPieChart(projectsGiven) {
         legend.selectAll('li').attr('class', (_, idx) =>
           idx === selectedIndex ? 'legend-item selected' : 'legend-item'
         );
+
+        // only show projects of selected part
+        if (selectedIndex === -1) {
+          renderProjects(projects, projectsContainer, 'h2');
+          titleElement.textContent = `${projects.length} Projects`;
+        } else {
+          const selectedYear = data[selectedIndex].label;
+          const filteredByYear = projects.filter(
+            (p) => p.year === selectedYear
+          );
+
+          renderProjects(filteredByYear, projectsContainer, 'h2');
+          titleElement.textContent = `${filteredByYear.length} Projects in ${selectedYear}`;
+        }
       });
   });
 
