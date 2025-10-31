@@ -149,6 +149,25 @@ let query = '';
 const searchInput = document.querySelector('.searchBar');
 renderPieChart(projects);
 
+// consider both query and year
+function getFilteredProjects() {
+  let filtered = projects;
+
+  if (query) {
+    filtered = filtered.filter((p) =>
+      p.title.toLowerCase().includes(query)
+    );
+  }
+  if (selectedIndex !== -1) {
+    const selectedYear = data[selectedIndex].label;
+    filtered = filtered.filter((p) => p.year === selectedYear);
+  }
+
+  return filtered;
+}
+
+
+
 // input: Triggered every time the user enters or deletes a character (in real time).
 searchInput.addEventListener('input', (event) => {
   query = event.target.value.trim().toLowerCase();
