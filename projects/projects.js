@@ -76,45 +76,64 @@ if (titleElement) {
 //     .html(`<span class="swatch" aria-hidden="true"></span> ${d.label} <em>(${d.value})</em>`);
 // });
 
+let selectedIndex = -1; // 默认没有选中任何 wedge
+
 function renderPieChart(projectsGiven) {
   const svg = d3.select('#projects-pie-plot');
   const legend = d3.select('.legend');
 
-  svg.selectAll('path').remove();
-  legend.selectAll('li').remove();
+  // 清空旧图表和图例
+  svg.selectAll('*').remove();
+  legend.selectAll('*').remove();
 
-  // if no data, not draw
-  if (!projectsGiven || projectsGiven.length === 0) return;
-
-  const rolledData = d3.rollups(
+  // === 计算数据 ===
+  let rolledData = d3.rollups(
     projectsGiven,
-    (v) => v.length, 
-    (d) => d.year 
+    (v) => v.length,
+    (d) => d.year
   );
 
-  const data = rolledData.map(([year, count]) => ({
+  let data = rolledData.map(([year, count]) => ({
     label: year,
-    value: count,
+    value: count
   }));
 
-  const colors = d3.scaleOrdinal(d3.schemeTableau10);
-  const sliceGenerator = d3.pie().value((d) => d.value);
-  const arcData = sliceGenerator(data);
-  const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+  // === 配置 D3 ===
+  let colors = d3.scaleOrdinal(d3.schemeTableau10);
+  let pie = d3.pie().value((d) => d.value);
+  let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
+  let arcs = pie(data);
 
-  svg
-    .selectAll('path')
-    .data(arcData)
-    .enter()
-    .append('path')
-    .attr('d', arcGenerator)
-    .attr('fill', (_, i) => colors(i));
+  // === 绘制饼图 ===
+  arcs.forEach((arc, i) => {
+    svg
+      .append('path')
+      .attr('d', arcGenerator(arc))
+      .attr('fill', colors(i))
+      .attr('class', i === selectedIndex ? 'selected' : '')
+      .attr('data-index', i)
+      .on('click', () => {
+        // 点击切换选中状态
+        selectedIndex = selectedIndex === i ? -1 : i;
 
-  data.forEach((d, idx) => {
+        // 更新所有扇形样式
+        svg.selectAll('path').attr('class', (_, idx) =>
+          idx === selectedIndex ? 'selected' : ''
+        );
+
+        // 更新所有 legend 样式
+        legend.selectAll('li').attr('class', (_, idx) =>
+          idx === selectedIndex ? 'legend-item selected' : 'legend-item'
+        );
+      });
+  });
+
+  // === 绘制图例 ===
+  data.forEach((d, i) => {
     legend
       .append('li')
-      .attr('class', 'legend-item')
-      .attr('style', `--color:${colors(idx)}`)
+      .attr('class', i === selectedIndex ? 'legend-item selected' : 'legend-item')
+      .attr('style', `--color:${colors(i)}`)
       .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
   });
 }
