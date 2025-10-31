@@ -169,9 +169,25 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     article.appendChild(img);
 
     // <p> for text
+    // change as below
+    //<div>
+    //<p>描述</p>
+    //<p class="project-year">2024</p>
+    //</div>
+    const textWrapper = document.createElement('div');
+
     const p = document.createElement('p');
     p.textContent = descText;
-    article.appendChild(p);
+    textWrapper.appendChild(p);
+
+    if (project.year) {
+      const year = document.createElement('p');
+      year.textContent = project.year;
+      year.classList.add('project-year');
+      textWrapper.appendChild(year);
+    }
+
+    article.appendChild(textWrapper);
 
     fragment.appendChild(article);
   }
