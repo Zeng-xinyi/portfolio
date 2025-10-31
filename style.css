@@ -236,3 +236,10 @@ a {
   font-size: 0.9em;
   margin-top: 0.3em;
 }
+
+/*SVG*/
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible; /*can not be cut*/
+}
