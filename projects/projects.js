@@ -76,17 +76,15 @@ if (titleElement) {
 //     .html(`<span class="swatch" aria-hidden="true"></span> ${d.label} <em>(${d.value})</em>`);
 // });
 
-let selectedIndex = -1; // 默认没有选中任何 wedge
+let selectedIndex = -1; 
 
 function renderPieChart(projectsGiven) {
   const svg = d3.select('#projects-pie-plot');
   const legend = d3.select('.legend');
 
-  // 清空旧图表和图例
   svg.selectAll('*').remove();
   legend.selectAll('*').remove();
 
-  // === 计算数据 ===
   let rolledData = d3.rollups(
     projectsGiven,
     (v) => v.length,
@@ -98,13 +96,11 @@ function renderPieChart(projectsGiven) {
     value: count
   }));
 
-  // === 配置 D3 ===
   let colors = d3.scaleOrdinal(d3.schemeTableau10);
   let pie = d3.pie().value((d) => d.value);
   let arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
   let arcs = pie(data);
 
-  // === 绘制饼图 ===
   arcs.forEach((arc, i) => {
     svg
       .append('path')
@@ -113,22 +109,18 @@ function renderPieChart(projectsGiven) {
       .attr('class', i === selectedIndex ? 'selected' : '')
       .attr('data-index', i)
       .on('click', () => {
-        // 点击切换选中状态
         selectedIndex = selectedIndex === i ? -1 : i;
 
-        // 更新所有扇形样式
         svg.selectAll('path').attr('class', (_, idx) =>
           idx === selectedIndex ? 'selected' : ''
         );
 
-        // 更新所有 legend 样式
         legend.selectAll('li').attr('class', (_, idx) =>
           idx === selectedIndex ? 'legend-item selected' : 'legend-item'
         );
       });
   });
 
-  // === 绘制图例 ===
   data.forEach((d, i) => {
     legend
       .append('li')
