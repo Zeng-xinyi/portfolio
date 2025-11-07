@@ -341,4 +341,109 @@ path.selected {
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+  text-align: center;
+  row-gap: 0.8rem; 
+  margin-top: 2rem;
+}
+
+/* label*/
+.stats dt {
+  grid-row: 1; /* dt in first row */
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6c6c80;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* number */
+.stats dd {
+  grid-row: 2; /* dd in second row */
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* meta: day of commit */
+#chart {
+  margin-top: 2rem; 
+}
+
+
+/*grid*/
+.gridlines line {
+  shape-rendering: crispEdges;
+}
+
+.gridlines path {
+  stroke: none;
+}
+
+/*Tooltip*/
+.info {
+  display: grid;
+  grid-template-columns: auto 1fr; 
+  gap: 0.25rem 1rem;
+  margin: 1rem;
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.9rem;
+  max-width: 300px;
+}
+
+.info dt {
+  color: #666;
+  font-weight: 600;
+}
+
+.info dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+dl.info {
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* location(top left corner) */
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 10;
+}
+
+/* hover*/
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+}
+
+
+
+
+
+
+
+
+
 
