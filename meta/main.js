@@ -52,6 +52,7 @@ function processCommits(data) {
     });
 }
 
+// update commit: npx elocuent -d . -o meta/loc.csv --spaces 2
 const data = await loadData();
 const commits = processCommits(data);
 
@@ -172,10 +173,12 @@ function renderScatterPlot(data, commits) {
   const dots = svg.append('g').attr('class', 'dots');
 
   const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
-  const rScale = d3
-  .scaleLinear()
+  const rScale = d3.scaleSqrt()
   .domain([minLines, maxLines])
-  .range([4, 25]); //3px, 25px
+  .range([3, 25]); //5px, 20px
+
+  //let small points above the big points
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines); 
 
   dots
   .selectAll('circle')
@@ -187,7 +190,11 @@ function renderScatterPlot(data, commits) {
   .attr('fill', 'steelblue')
   .style('fill-opacity', 0.7)
   .on('mouseenter', (event, commit) => {
-    d3.select(event.currentTarget).style('fill-opacity', 1); // highlight when hover
+    d3.select(event.currentTarget)
+      .transition()
+      .duration(150)
+      .attr('r', (d) => rScale(d.totalLines) * 1.1) 
+      .style('fill-opacity', 1);// highlight when hover
     renderTooltipContent(commit);
     updateTooltipVisibility(true); // show tooltip
     updateTooltipPosition(event);
@@ -196,7 +203,11 @@ function renderScatterPlot(data, commits) {
     updateTooltipPosition(event);
   })
   .on('mouseleave', () => {
-    d3.select(event.currentTarget).style('fill-opacity', 0.7); 
+    d3.select(event.currentTarget)
+      .transition()
+      .duration(150)
+      .attr('r', (d) => rScale(d.totalLines))
+      .style('fill-opacity', 0.7);
     updateTooltipVisibility(false); // hide tooltip
   });
 
@@ -217,9 +228,19 @@ function renderScatterPlot(data, commits) {
     .append('g')
     .attr('transform', `translate(${usableArea.left}, 0)`)
     .call(yAxis);
+
+  //brushing
+  function createBrushSelector(svg) {
+    svg.call(d3.brush());
+    svg.selectAll('.dots, .overlay ~ *').raise();
+  }
+  createBrushSelector(svg);
 }
 
 renderScatterPlot(data, commits);
+
+
+
 
 
 
