@@ -352,7 +352,7 @@ path.selected {
 /* label*/
 .stats dt {
   grid-row: 1; /* dt in first row */
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #6c6c80;
   text-transform: uppercase;
@@ -363,7 +363,7 @@ path.selected {
 /* number */
 .stats dd {
   grid-row: 2; /* dd in second row */
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #111;
   line-height: 1.2;
@@ -456,22 +456,6 @@ circle:hover {
 circle.selected {
   fill: #ff6b6b; 
 }
-
-.language-stats {
-  margin-top: 10px;
-  font-family: sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.language-stats dt {
-  font-weight: bold;
-}
-
-.language-stats dd {
-  margin: 0 0 6px 10px;
-}
-
 
 
 

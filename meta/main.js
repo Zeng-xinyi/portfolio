@@ -107,8 +107,24 @@ function updateTooltipVisibility(isVisible) {
 function updateTooltipPosition(event) {
   const tooltip = document.getElementById('commit-tooltip');
   const offset = 15;
-  tooltip.style.left = `${event.clientX + offset}px`;
-  tooltip.style.top = `${event.clientY + offset}px`;
+
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+
+  let left = event.clientX + offset;
+  let top = event.clientY + offset;
+
+  if (left + tooltipRect.width > windowWidth) {
+    left = event.clientX - tooltipRect.width - offset;
+  }
+
+  if (top + tooltipRect.height > windowHeight) {
+    top = event.clientY - tooltipRect.height - offset;
+  }
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
 }
 
 
@@ -251,6 +267,40 @@ function renderScatterPlot(data, commits) {
   return selectedCommits;
   }
 
+  function renderLanguageBreakdown(selection) {
+    const selectedCommits = selection
+      ? commits.filter((d) => isCommitSelected(selection, d))
+      : [];
+    
+    const container = document.getElementById('language-breakdown');
+
+    if (selectedCommits.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const lines = selectedCommits.flatMap((d) => d.lines);
+
+    const breakdown = d3.rollup(
+      lines,
+      (v) => v.length,
+      (d) => d.type
+    );
+
+    container.innerHTML = '';
+
+    for (const [language, count] of breakdown) {
+      const proportion = count / lines.length;
+      const formatted = d3.format('.1~%')(proportion);
+
+      container.innerHTML += `
+        <dt>${language}</dt>
+        <dd>${count} lines (${formatted})</dd>
+      `;
+    }
+  }
+
+
 
   function brushed(event) {
     const selection = event.selection;
@@ -258,6 +308,7 @@ function renderScatterPlot(data, commits) {
       .classed('selected', (d) => isCommitSelected(selection, d));
     
     renderSelectionCount(selection);
+    renderLanguageBreakdown(selection);
   }
 
   const brush = d3.brush()
