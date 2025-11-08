@@ -230,11 +230,43 @@ function renderScatterPlot(data, commits) {
     .call(yAxis);
 
   //brushing
-  function createBrushSelector(svg) {
-    svg.call(d3.brush());
-    svg.selectAll('.dots, .overlay ~ *').raise();
+  function isCommitSelected(selection, commit) {
+    if (!selection) return false;
+    const [[x0, y0], [x1, y1]] = selection;
+    const x = xScale(commit.datetime);
+    const y = yScale(commit.hourFrac);
+    return x0 <= x && x <= x1 && y0 <= y && y <= y1;
   }
-  createBrushSelector(svg);
+
+  function renderSelectionCount(selection) {
+  const selectedCommits = selection
+    ? commits.filter((d) => isCommitSelected(selection, d))
+    : [];
+
+  const countElement = document.querySelector('#selection-count');
+  countElement.textContent = `${
+    selectedCommits.length || 'No'
+  } commits selected`;
+
+  return selectedCommits;
+  }
+
+
+  function brushed(event) {
+    const selection = event.selection;
+    d3.selectAll('circle')
+      .classed('selected', (d) => isCommitSelected(selection, d));
+    
+    renderSelectionCount(selection);
+  }
+
+  const brush = d3.brush()
+    .on('start brush end', brushed);
+
+  svg.call(brush);
+
+  // Position the scatter points above the brush rectangle
+  svg.select('.dots').raise();
 }
 
 renderScatterPlot(data, commits);

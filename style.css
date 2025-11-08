@@ -438,6 +438,40 @@ circle:hover {
   transform: scale(1.5);
 }
 
+/*brushing*/
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; 
+  }
+}
+
+.selection {
+  fill-opacity: 0.1;       
+  stroke: black;          
+  stroke-opacity: 0.7;     
+  stroke-dasharray: 5 3;   
+  animation: marching-ants 2s linear infinite; 
+}
+
+circle.selected {
+  fill: #ff6b6b; 
+}
+
+.language-stats {
+  margin-top: 10px;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.language-stats dt {
+  font-weight: bold;
+}
+
+.language-stats dd {
+  margin: 0 0 6px 10px;
+}
+
 
 
 
