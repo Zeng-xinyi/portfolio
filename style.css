@@ -458,6 +458,18 @@ circle.selected {
 }
 
 
+/* ===== Sub-Title for Schools in Projects Section ===== */
+.sub-title {
+    margin-top: 32px;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-left: 6px solid #e37e53; 
+    background: #f9eee7;            
+    color: #1a1a1a;
+    border-radius: 4px;
+}
 
 
 
