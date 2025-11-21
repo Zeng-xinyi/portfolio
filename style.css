@@ -471,6 +471,45 @@ circle.selected {
     border-radius: 4px;
 }
 
+/* ===== Fix project images oversizing ===== */
+.projects article {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+
+.projects article img {
+  width: 100%;
+  height: 180px;             
+  object-fit: cover;         
+  object-position: center;   
+  border-radius: 8px;        
+  margin-bottom: 0.8em;      
+  display: block;
+}
+
+.projects article h2,
+.projects article p {
+  overflow-wrap: break-word;
+}
+
+/* ===== Fix spacing between image and title in project cards ===== */
+.projects article img {
+  width: 100%;              
+  height: auto !important;  
+  object-fit: contain !important;
+  object-position: center;
+  display: block;
+
+  margin-top: 1.2em !important;  
+  margin-bottom: 1.2em !important; 
+
+
+.projects article h2 {
+  margin-top: 0.1em !important; 
+}
+
 
 
 
