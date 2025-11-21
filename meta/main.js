@@ -56,6 +56,10 @@ function processCommits(data) {
 const data = await loadData();
 const commits = processCommits(data);
 
+let commitProgress = 100; // slider value 0-100
+let timeScale;            // converts datetime <-> % progress
+let commitMaxTime;        // the actual datetime cutoff
+
 console.log(commits);
 
 function renderCommitInfo(data, commits) {
@@ -78,9 +82,21 @@ function renderCommitInfo(data, commits) {
   //maximum depth
   dl.append('dt').text('Maximum depth');
   dl.append('dd').text(d3.max(data, (d) => d.depth));
+  
 }
 
 renderCommitInfo(data, commits);
+
+// --- Build time scale ---
+timeScale = d3.scaleTime()
+  .domain([
+    d3.min(commits, d => d.datetime),
+    d3.max(commits, d => d.datetime)
+  ])
+  .range([0, 100]);
+
+commitMaxTime = timeScale.invert(commitProgress);
+
 
 function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
@@ -126,6 +142,11 @@ function updateTooltipPosition(event) {
   tooltip.style.left = `${left}px`;
   tooltip.style.top = `${top}px`;
 }
+
+document.getElementById("commit-progress")
+  .addEventListener("input", onTimeSliderChange);
+
+onTimeSliderChange(); 
 
 
 
@@ -322,6 +343,21 @@ function renderScatterPlot(data, commits) {
 
 renderScatterPlot(data, commits);
 
+function onTimeSliderChange() {
+  const slider = document.getElementById("commit-progress");
+  commitProgress = +slider.value;
+
+
+  commitMaxTime = timeScale.invert(commitProgress);
+
+  const timeElem = document.getElementById("commit-time");
+  timeElem.textContent = commitMaxTime.toLocaleString("en", {
+    dateStyle: "long",
+    timeStyle: "short"
+  });
+
+  updateScatterPlot();
+}
 
 
 

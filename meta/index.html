@@ -13,6 +13,22 @@
         <!-- empty container, can be used by javascript(especially D3) to fill the content -->
         <div id="stats"></div>
         <h2>Commits by time of day</h2>
+        <div id="time-filter" style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+          <label for="commit-progress" style="flex: 1;">
+            Show commits until:
+            <input
+              id="commit-progress"
+              type="range"
+              min="0"
+              max="100"
+              value="100"
+              style="width: 600px; margin-left: 10px;"
+            />
+          </label>
+        
+          <time id="commit-time" style="margin-left: auto;">Loading...</time>
+        </div>
+
         <div id="chart"></div>
         <!-- Brush -->
         <p id="selection-count">No commits selected</p>
