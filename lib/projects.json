@@ -3,18 +3,31 @@
     "title": "iGEM 2024 Modeling",
     "year": "2024",
     "image": "../images/igem.png",
-    "description": "Built CA-catalyzed metabolic pathway using iLC858 and Recon3D; processed calcium ion data; created light attenuation model using Beer–Lambert Law and WebPlotDigitizer."
+    "description": [
+      "Built CA-catalyzed metabolic pathway using iLC858 and Recon3D",
+      "Processed calcium ion data",
+      "Created light attenuation model using Beer–Lambert Law and WebPlotDigitizer"
+    ]
   },
   {
     "title": "Reinforcement Learning Algorithm Research",
     "year": "2024",
     "image": "../images/ai.png",
-    "description": "Analyzed Q-learning, DQN, Double DQN, Dueling DQN, and PER in FrozenLake-v1; identified key hyperparameter effects and convergence behavior."
+    "description": [
+      "Analyzed Q-learning, DQN, Double DQN, Dueling DQN, and PER in FrozenLake-v1",
+      "Identified key hyperparameter effects",
+      "Examined convergence behavior across algorithms"
+    ]
   },
   {
     "title": "MCM: Olympic Medal Prediction",
     "year": "2025",
     "image": "../images/olympic.png",
-    "description": "Built Random Forest model for medal prediction; used bootstrap confidence intervals; constructed decision tree for first-medal estimation and applied TOPSIS to evaluate coaching needs."
+    "description": [
+      "Built Random Forest model for medal prediction",
+      "Used bootstrap confidence intervals",
+      "Constructed decision tree for first-medal estimation",
+      "Applied TOPSIS to evaluate coaching needs"
+    ]
   }
 ]

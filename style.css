@@ -306,6 +306,29 @@ a {
   color: canvastext;
 }
 
+
+.projects ul {
+  list-style: none;  
+  margin-left: 0em;  
+  padding-left: 0.8rem; 
+}
+
+.projects ul li {
+  position: relative;
+  padding-left: 0.6rem;   
+  margin-bottom: 0.25rem; 
+}
+
+.projects ul li::before {
+  content: "•";         
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  font-size: 0.65em;    
+  color: #555;         
+}
+
+
 /*hover*/ 
 svg {
   width: 100%;
@@ -508,6 +531,8 @@ circle.selected {
 
 .projects article h2 {
   margin-top: 0.1em !important; 
+}
+
 }
 
 

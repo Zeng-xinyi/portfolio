@@ -116,10 +116,6 @@ export async function fetchJSON(url) {
 }
 
 export function renderProjects(projects, containerElement, headingLevel = 'h2') {
-  //projects: array, whose object is { title, image, description, ... }, referring to an article
-  //containerElement: DOM container
-
-  //check object: position error
   if (!containerElement || !(containerElement instanceof Element)) {
     console.error('renderProjects: containerElement is not a DOM element');
     return;
@@ -128,15 +124,12 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     console.error('renderProjects: projects must be an array');
     return;
   }
-  // headingLevel: 'h1' 'h2' 'h3' … 'h6'
   if (!/^h[1-6]$/.test(headingLevel)) {
-    console.warn(`renderProjects: invalid headingLevel "${headingLevel}", using "h2".`);
     headingLevel = 'h2';
   }
 
-  //let container like <div class="projects"> empty
   containerElement.innerHTML = '';
-  // note when there is no project
+
   if (projects.length === 0) {
     const p = document.createElement('p');
     p.textContent = 'No projects available.';
@@ -145,42 +138,46 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
   }
 
   const fragment = document.createDocumentFragment();
-  // iterate projects
+
   for (const project of projects) {
     const article = document.createElement('article');
-    //set title
-    const titleText = project.title || 'Untitled Project';
-    const imgSrc = project.image || '../images/placeholder.png';
-    const descText = project.description || '';
 
+    // === Title ===
     const heading = document.createElement(headingLevel);
-    heading.textContent = titleText;
-    //parentNode.appendChild(childNode);
-    //Add a node as the last child of another node
+    heading.textContent = project.title || 'Untitled Project';
     article.appendChild(heading);
 
-    // image
+    // === Image ===
     const img = document.createElement('img');
-    img.src = imgSrc;
-    img.alt = titleText;
+    img.src = project.image || '../images/placeholder.png';
+    img.alt = project.title || 'Project Image';
     img.loading = 'lazy';
     img.addEventListener('error', () => {
       img.src = '../images/placeholder.png';
     });
     article.appendChild(img);
 
-    // <p> for text
-    // change as below
-    //<div>
-    //<p>描述</p>
-    //<p class="project-year">2024</p>
-    //</div>
+    // === Description + Year wrapper ===
     const textWrapper = document.createElement('div');
 
-    const p = document.createElement('p');
-    p.textContent = descText;
-    textWrapper.appendChild(p);
+    //
+    // ⭐⭐ Bullet List Support ⭐⭐
+    //
+    if (Array.isArray(project.description)) {
+      const ul = document.createElement('ul');
+      project.description.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      textWrapper.appendChild(ul);
+    } else {
+      const p = document.createElement('p');
+      p.textContent = project.description || '';
+      textWrapper.appendChild(p);
+    }
 
+    // === Year ===
     if (project.year) {
       const year = document.createElement('p');
       year.textContent = project.year;
@@ -189,7 +186,6 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     }
 
     article.appendChild(textWrapper);
-
     fragment.appendChild(article);
   }
 
