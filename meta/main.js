@@ -55,10 +55,12 @@ function processCommits(data) {
 // update commit: npx elocuent -d . -o meta/loc.csv --spaces 2
 const data = await loadData();
 const commits = processCommits(data);
+let filteredCommits = commits; 
 
 let commitProgress = 100; // slider value 0-100
 let timeScale;            // converts datetime <-> % progress
 let commitMaxTime;        // the actual datetime cutoff
+let xScale, yScale;
 
 console.log(commits);
 
@@ -175,14 +177,14 @@ function renderScatterPlot(data, commits) {
 
 
   //X: date
-  const xScale = d3
+  xScale = d3
     .scaleTime()
     .domain(d3.extent(commits, (d) => d.datetime))
     .range([usableArea.left, usableArea.right])
     .nice();
 
   // Y: hour of the day
-  const yScale = d3
+  yScale = d3
     .scaleLinear()
     .domain([0, 24])
     .range([usableArea.bottom, usableArea.top]);
@@ -259,11 +261,13 @@ function renderScatterPlot(data, commits) {
   svg
     .append('g')
     .attr('transform', `translate(0, ${usableArea.bottom})`)
+    .attr('class', 'x-axis') //redraw
     .call(xAxis);
 
   svg
     .append('g')
     .attr('transform', `translate(${usableArea.left}, 0)`)
+    .attr('class', 'y-axis')
     .call(yAxis);
 
   //brushing
@@ -355,11 +359,72 @@ function onTimeSliderChange() {
     dateStyle: "long",
     timeStyle: "short"
   });
+  filteredCommits = commits.filter(d => d.datetime <= commitMaxTime);
 
   updateScatterPlot();
 }
 
+function updateScatterPlot() {
+  const svg = d3.select("#chart").select("svg");
+  if (svg.empty()) return;
 
+  xScale.domain(d3.extent(filteredCommits, d => d.datetime));
+
+  const xAxis = d3.axisBottom(xScale);
+  const xAxisGroup = svg.select("g.x-axis");
+  xAxisGroup.selectAll("*").remove();  
+  xAxisGroup.call(xAxis);
+
+  const [minLines, maxLines] = d3.extent(filteredCommits, d => d.totalLines);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 25]);
+
+  const dots = svg.select("g.dots");
+
+  dots
+    .selectAll("circle")
+    .data(filteredCommits, d => d.id)
+    .join(
+      enter => enter
+        .append("circle")
+        .attr("cx", d => xScale(d.datetime))
+        .attr("cy", d => yScale(d.hourFrac))
+        .attr("r", d => rScale(d.totalLines))
+        .attr("fill", "steelblue")
+        .style("fill-opacity", 0.7)
+        .on('mouseenter', (event, commit) => {
+          d3.select(event.currentTarget)
+            .transition()
+            .duration(150)
+            .attr("r", d => rScale(d.totalLines) * 1.1)
+            .style("fill-opacity", 1);
+          renderTooltipContent(commit);
+          updateTooltipVisibility(true);
+          updateTooltipPosition(event);
+        })
+        .on('mousemove', (event) => updateTooltipPosition(event))
+        .on('mouseleave', (event) => {
+          d3.select(event.currentTarget)
+            .transition()
+            .duration(150)
+            .attr("r", d => rScale(d.totalLines))
+            .style("fill-opacity", 0.7);
+          updateTooltipVisibility(false);
+        }),
+
+      update => update
+        .transition()
+        .duration(300)
+        .attr("cx", d => xScale(d.datetime))
+        .attr("cy", d => yScale(d.hourFrac))
+        .attr("r", d => rScale(d.totalLines)),
+
+      exit => exit
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+        .remove()
+    );
+}
 
 
 
