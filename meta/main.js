@@ -543,10 +543,10 @@ function onStepEnter(response) {
   filteredCommits = commits.filter((d) => d.datetime <= targetTime);
 
   // 更新 Summary（你的 1.2 已完成）
-  updateSummary(filteredCommits);
+  updateSummaryDisplay(filteredCommits);
 
   // 更新 scatter plot
-  updateScatterPlot(data, filteredCommits);
+  updateScatterPlot();
 
   // 更新文件可视化（Step 2.1）
   updateFileDisplay(filteredCommits);
