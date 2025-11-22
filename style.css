@@ -375,7 +375,7 @@ path.selected {
 /* label*/
 .stats dt {
   grid-row: 1; /* dt in first row */
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #6c6c80;
   text-transform: uppercase;
@@ -386,7 +386,7 @@ path.selected {
 /* number */
 .stats dd {
   grid-row: 2; /* dd in second row */
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #111;
   line-height: 1.2;
@@ -543,8 +543,90 @@ circle.selected {
 }
 
 
+#files {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  row-gap: 4px;
+
+  > div {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  dt {
+    grid-column: 1;
+  }
+
+  dd {
+    grid-column: 2;
+  }
+}
+
+#files dd {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  align-content: start;
+  gap: 0.15em;
+  padding-top: 0.6em;
+  margin-left: 0;
+}
 
 
+.loc {
+  display: flex;
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: var(--color, steelblue);  
+  border-radius: 50%;
+}
 
+
+#files dt code {
+  font-family: inherit;
+  font-size: 1em;       
+  font-weight: 600;     
+}
+
+#files small {
+  font-family: inherit;
+  font-size: 0.85em;   
+  font-weight: 400;    
+  opacity: 0.7;        
+  display: block;
+}
+
+#scrolly-1 {
+  position: relative;
+  display: flex;
+  margin-bottom: 25vh;
+  gap: 1rem;
+}
+
+#scatter-story {
+  position: relative;
+  flex: 1; 
+}
+
+#scatter-plot {
+  position: sticky;
+  flex: 1.5;  
+  top: 0;
+  left: 0;
+  height: 50vh; /* REQUIRED for sticky to work */
+}
+
+.step {
+  padding-bottom: 50vh;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+
+#files {
+  margin-top: 6rem;
+}
 
 

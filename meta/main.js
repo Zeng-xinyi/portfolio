@@ -1,5 +1,7 @@
 // import D3
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
+
 
 async function loadData() {
   const data = await d3.csv('loc.csv', (row) => ({
@@ -54,13 +56,15 @@ function processCommits(data) {
 
 // update commit: npx elocuent -d . -o meta/loc.csv --spaces 2
 const data = await loadData();
-const commits = processCommits(data);
+const commits = processCommits(data).sort((a, b) => a.datetime - b.datetime);
 let filteredCommits = commits; 
 
 let commitProgress = 100; // slider value 0-100
 let timeScale;            // converts datetime <-> % progress
 let commitMaxTime;        // the actual datetime cutoff
 let xScale, yScale;
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
 
 console.log(commits);
 
@@ -363,6 +367,7 @@ function onTimeSliderChange() {
 
   updateScatterPlot();
   updateSummaryDisplay(filteredCommits);
+  updateFileDisplay(filteredCommits);
 }
 
 function updateScatterPlot() {
@@ -455,4 +460,109 @@ function updateSummaryDisplay(filteredCommits) {
     d3.max(filteredLines, d => d.depth)
   );
 }
+
+function updateFileDisplay(filteredCommits) {
+  let lines = filteredCommits.flatMap(d => d.lines);
+
+  let files = d3.groups(lines, d => d.file).map(([name, lines]) => ({
+    name,
+    lines
+  })).sort((a, b) => b.lines.length - a.lines.length);// sort lines
+
+  let filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, d => d.name)
+    .join(
+      enter =>
+        enter.append('div').call(div => {
+          div.append('dt').append('code');
+          div.append('dd');
+        })
+    );
+
+  filesContainer
+    .select('dt > code')
+    .html(d => `${d.name}<br><small>${d.lines.length} lines</small>`);
+
+  filesContainer
+    .select('dd')
+    .selectAll('div')
+    .data(d => d.lines)
+    .join('div')
+    .attr('class', 'loc')
+    .attr('style', (d) => `--color: ${colors(d.type)}`); ;
+}
+
+// ----------- Step 3.2: Generate commit scrolly text ------------
+d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html(
+    (d, i) => `
+      <p>
+        On ${d.datetime.toLocaleString('en', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        })},
+        I made
+        <a href="${d.url}" target="_blank">
+          ${i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+        </a>.
+        I edited ${d.totalLines} lines across ${
+          d3.rollups(
+            d.lines,
+            (D) => D.length,
+            (d) => d.file,
+          ).length
+        } files.
+      </p>
+    `
+  );
+
+// -------------------- Step 3.3: Scrollama -----------------------
+
+function onStepEnter(response) {
+  // 取得当前 step 对应的 commit 数据
+  const commit = response.element.__data__;
+  const targetTime = commit.datetime;
+
+  // 让 slider 跟随滚动移动（可选，但体验更好）
+  const percent = timeScale(targetTime);
+  commitProgress = percent;
+  document.getElementById('commit-progress').value = percent;
+  document.getElementById('commit-time').textContent =
+    targetTime.toLocaleString('en', {
+      dateStyle: 'long',
+      timeStyle: 'short',
+    });
+
+  // 和 slider 一样生成 filteredCommits
+  filteredCommits = commits.filter((d) => d.datetime <= targetTime);
+
+  // 更新 Summary（你的 1.2 已完成）
+  updateSummary(filteredCommits);
+
+  // 更新 scatter plot
+  updateScatterPlot(data, filteredCommits);
+
+  // 更新文件可视化（Step 2.1）
+  updateFileDisplay(filteredCommits);
+}
+
+const scroller = scrollama();
+
+scroller
+  .setup({
+    container: '#scrolly-1',
+    step: '#scrolly-1 .step',
+    offset: 0.5, // 当 step 元素进入屏幕中线 (=50%) 时触发
+  })
+  .onStepEnter(onStepEnter);
+
+// 窗口改变大小时重新计算 Scrollama
+window.addEventListener('resize', scroller.resize);
+
 
