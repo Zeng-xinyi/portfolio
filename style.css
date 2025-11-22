@@ -452,9 +452,16 @@ dl.info[hidden]:not(:hover, :focus-within) {
 
 /* hover*/
 circle {
-  transition: 200ms;
+  transition: all 200ms ease;
   transform-origin: center;
   transform-box: fill-box;
+}
+
+/* Make new circles animate from r = 0 */
+@starting-style {
+  circle {
+    r: 0;
+  }
 }
 
 circle:hover {

@@ -221,7 +221,7 @@ function renderScatterPlot(data, commits) {
 
   dots
   .selectAll('circle')
-  .data(commits)
+  .data(commits, d => d.id)   // reuse the circle
   .join('circle')
   .attr('cx', (d) => xScale(d.datetime))
   .attr('cy', (d) => yScale(d.hourFrac))
@@ -362,6 +362,7 @@ function onTimeSliderChange() {
   filteredCommits = commits.filter(d => d.datetime <= commitMaxTime);
 
   updateScatterPlot();
+  updateSummaryDisplay(filteredCommits);
 }
 
 function updateScatterPlot() {
@@ -382,7 +383,7 @@ function updateScatterPlot() {
 
   dots
     .selectAll("circle")
-    .data(filteredCommits, d => d.id)
+    .data(filteredCommits, d => d.id) // reuse circles
     .join(
       enter => enter
         .append("circle")
@@ -427,4 +428,31 @@ function updateScatterPlot() {
 }
 
 
+function updateSummaryDisplay(filteredCommits) {
+
+  const filteredLines = filteredCommits.flatMap(d => d.lines);
+
+  const dl = d3.select('#stats dl');
+
+  // update Total LOC
+  dl.select(":nth-child(2)").text(filteredLines.length);
+
+  // update Total commits
+  dl.select(":nth-child(4)").text(filteredCommits.length);
+
+  // update Number of files
+  dl.select(":nth-child(6)").text(
+    d3.groups(filteredLines, d => d.file).length
+  );
+
+  // update Average depth
+  dl.select(":nth-child(8)").text(
+    d3.mean(filteredLines, d => d.depth).toFixed(2)
+  );
+
+  // update Maximum depth
+  dl.select(":nth-child(10)").text(
+    d3.max(filteredLines, d => d.depth)
+  );
+}
 

@@ -9,10 +9,6 @@
 </head>
 <body>
     <h1>Meta</h1>
-        <h2>Summary</h2>
-        <!-- empty container, can be used by javascript(especially D3) to fill the content -->
-        <div id="stats"></div>
-        <h2>Commits by time of day</h2>
         <div id="time-filter" style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
           <label for="commit-progress" style="flex: 1;">
             Show commits until:
@@ -28,6 +24,10 @@
         
           <time id="commit-time" style="margin-left: auto;">Loading...</time>
         </div>
+        <h2>Summary</h2>
+        <!-- empty container, can be used by javascript(especially D3) to fill the content -->
+        <div id="stats"></div>
+        <h2>Commits by time of day</h2>
 
         <div id="chart"></div>
         <!-- Brush -->
